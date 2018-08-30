@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -43,6 +43,8 @@
     <module>repository</module>
     <module>repository-springboot</module>
     <module>repository-wildfly</module>
+    <module>rest-service-workitem</module>
+    <module>rest-service-workitem-demo</module>
   </modules>
 
   <properties>
@@ -564,6 +566,11 @@
         <artifactId>repository</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.jbpm.contrib</groupId>
+        <artifactId>rest-service-workitem</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- zip module dependencies -->
       <dependency>
@@ -721,6 +728,27 @@
         <artifactId>mavenembedder-workitem</artifactId>
         <version>${project.version}</version>
         <type>zip</type>
+      </dependency>
+      <dependency>
+        <groupId>org.jbpm.contrib</groupId>
+        <artifactId>rest-service-workitem</artifactId>
+        <version>${project.version}</version>
+        <type>zip</type>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.5.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-common-core</artifactId>
+        <version>2.6.0.Final-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
