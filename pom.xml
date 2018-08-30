@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -12,6 +12,40 @@
   <artifactId>workitems</artifactId>
   <packaging>pom</packaging>
   <name>jBPM Workitems</name>
+
+  <modules>
+    <module>template-resources</module>
+    <module>archive-workitem</module>
+    <module>exec-workitem</module>
+    <module>ftp-workitem</module>
+    <module>jabber-workitem</module>
+    <module>java-workitem</module>
+    <module>jpa-workitem</module>
+    <module>parser-workitem</module>
+    <module>rss-workitem</module>
+    <module>transform-workitem</module>
+    <module>google-calendar-workitem</module>
+    <module>google-mail-workitem</module>
+    <module>google-sheets-workitem</module>
+    <module>google-tasks-workitem</module>
+    <module>google-drive-workitem</module>
+    <module>google-translate-workitem</module>
+    <module>ibm-watson-workitem</module>
+    <module>dropbox-workitem</module>
+    <module>ifttt-workitem</module>
+    <module>twitter-workitem</module>
+    <module>github-workitem</module>
+    <module>jira-workitem</module>
+    <module>ethereum-workitem</module>
+    <module>camel-workitem</module>
+    <module>openweathermap-workitem</module>
+    <module>mavenembedder-workitem</module>
+    <module>repository</module>
+    <module>repository-springboot</module>
+    <module>repository-wildfly</module>
+    <module>rest-service-workitem</module>
+    <module>rest-service-workitem-demo</module>
+  </modules>
 
   <properties>
     <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
@@ -689,6 +723,11 @@
         <artifactId>repository</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.jbpm.contrib</groupId>
+        <artifactId>rest-service-workitem</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- zip module dependencies -->
       <dependency>
@@ -849,94 +888,24 @@
       </dependency>
       <dependency>
         <groupId>org.jbpm.contrib</groupId>
-        <artifactId>slack-workitem</artifactId>
+        <artifactId>rest-service-workitem</artifactId>
         <version>${project.version}</version>
         <type>zip</type>
       </dependency>
       <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>pdf-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.1</version>
       </dependency>
       <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>execute-sql-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.5.4</version>
       </dependency>
       <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>riot-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>pastebin-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>vimeo-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>kafka-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>google-maps-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>okta-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm.contrib</groupId>
-        <artifactId>docker-workitem</artifactId>
-        <version>${project.version}</version>
-        <type>zip</type>
-      </dependency>
-      <!-- jbpm workitem zip depends -->
-      <dependency>
-        <groupId>org.jbpm</groupId>
-        <artifactId>jbpm-workitems-bpmn2</artifactId>
-        <version>${version.org.kie}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm</groupId>
-        <artifactId>jbpm-workitems-email</artifactId>
-        <version>${version.org.kie}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm</groupId>
-        <artifactId>jbpm-workitems-jms</artifactId>
-        <version>${version.org.kie}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm</groupId>
-        <artifactId>jbpm-workitems-rest</artifactId>
-        <version>${version.org.kie}</version>
-        <type>zip</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jbpm</groupId>
-        <artifactId>jbpm-workitems-webservice</artifactId>
-        <version>${version.org.kie}</version>
-        <type>zip</type>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-common-core</artifactId>
+        <version>2.6.0.Final-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -1105,72 +1074,4 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
-  <profiles>
-    <profile>
-      <id>all</id>
-      <activation>
-        <property>
-          <name>!productized</name>
-        </property>
-      </activation>
-      <modules>
-        <module>template-resources</module>
-        <module>archive-workitem</module>
-        <module>exec-workitem</module>
-        <module>ftp-workitem</module>
-        <module>jabber-workitem</module>
-        <module>java-workitem</module>
-        <module>jpa-workitem</module>
-        <module>parser-workitem</module>
-        <module>rss-workitem</module>
-        <module>transform-workitem</module>
-        <module>google-calendar-workitem</module>
-        <module>google-mail-workitem</module>
-        <module>google-sheets-workitem</module>
-        <module>google-tasks-workitem</module>
-        <module>google-drive-workitem</module>
-        <module>google-translate-workitem</module>
-        <module>ibm-watson-workitem</module>
-        <module>dropbox-workitem</module>
-        <module>ifttt-workitem</module>
-        <module>twitter-workitem</module>
-        <module>github-workitem</module>
-        <module>jira-workitem</module>
-        <module>ethereum-workitem</module>
-        <module>camel-workitem</module>
-        <module>openweathermap-workitem</module>
-        <module>mavenembedder-workitem</module>
-        <module>slack-workitem</module>
-        <module>pdf-workitem</module>
-        <module>execute-sql-workitem</module>
-        <module>riot-workitem</module>
-        <module>pastebin-workitem</module>
-        <module>vimeo-workitem</module>
-        <module>kafka-workitem</module>
-        <module>google-maps-workitem</module>
-        <module>okta-workitem</module>
-        <module>docker-workitem</module>
-        <module>repository</module>
-        <module>repository-springboot</module>
-        <module>repository-wildfly</module>
-        <module>karaf-itests</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>productized</id>
-      <activation>
-        <property>
-          <name>productized</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <modules>
-        <module>template-resources</module>
-        <module>camel-workitem</module>
-        <module>repository</module>
-        <module>karaf-itests</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>
