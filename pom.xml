@@ -44,7 +44,6 @@
     <module>repository-springboot</module>
     <module>repository-wildfly</module>
     <module>rest-service-workitem</module>
-    <module>rest-service-workitem-demo</module>
   </modules>
 
   <properties>
@@ -749,11 +748,6 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>2.5.4</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss</groupId>
-        <artifactId>jboss-common-core</artifactId>
-        <version>2.6.0.Final-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
