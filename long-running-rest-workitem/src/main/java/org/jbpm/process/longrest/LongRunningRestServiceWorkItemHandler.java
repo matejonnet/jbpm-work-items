@@ -32,6 +32,7 @@ import org.jbpm.process.longrest.util.Mapper;
 import org.jbpm.process.longrest.util.ProcessUtils;
 import org.jbpm.process.longrest.util.Strings;
 import org.jbpm.process.workitem.core.AbstractLogOrThrowWorkItemHandler;
+import org.jbpm.process.workitem.core.util.RequiredParameterValidator;
 import org.jbpm.process.workitem.core.util.Wid;
 import org.jbpm.process.workitem.core.util.WidMavenDepends;
 import org.jbpm.process.workitem.core.util.WidParameter;
@@ -97,7 +98,6 @@ import static org.mvel2.templates.TemplateCompiler.compileTemplate;
 public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWorkItemHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(LongRunningRestServiceWorkItemHandler.class);
-    private static final String HEARTH_BEAT_PROCESS_ID_VARIABLE_NAME = "heartbeatWatcherId";
 
     /**
      * Cookies are required for sticky session in cases where cancel request must hit the same node behind the load balancer.
@@ -110,13 +110,13 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
 
     public LongRunningRestServiceWorkItemHandler(RuntimeManager runtimeManager) {
         this.runtimeManager = runtimeManager;
-        logger.info(">>> Constructing with runtimeManager ...");
+        logger.debug("Constructing with runtimeManager ...");
         initializeMvelContext();
         setLogThrownException(false);
     }
 
     public LongRunningRestServiceWorkItemHandler() {
-        logger.info(">>> Constructing without runtimeManager ...");
+        logger.debug("Constructing without runtimeManager ...");
         runtimeManager = null;
         initializeMvelContext();
         setLogThrownException(false);
@@ -134,8 +134,7 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
-            //TODO enable
-            //RequiredParameterValidator.validate(this.getClass(), workItem);
+            RequiredParameterValidator.validate(this.getClass(), workItem);
 
             long processInstanceId = workItem.getProcessInstanceId();
             WorkflowProcessInstance processInstance = ProcessUtils.getProcessInstance(runtimeManager,
@@ -331,7 +330,7 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
         systemVariables.put("callbackMethod", "POST");
         systemVariables.put(
                 "heartBeatUrl",
-                baseUrl + processInstance.getVariable(HEARTH_BEAT_PROCESS_ID_VARIABLE_NAME) + "/signal/imAlive");
+                baseUrl + processInstance.getId() + "/signal/imAlive");
         systemVariables.put("heartBeatMethod", "POST");
         return getVariableResolverFactoryChain(
                 systemVariables,
@@ -358,7 +357,13 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
 
         WorkflowProcessInstance currentInstance = processInstance;
         //add all parent instances to resolver chain
-        for (int i = 0; i < 100; i++) { //circuit-breaker: allow max 100 nested process instances
+        int maxDepth = 100;
+        int depth = 0;
+        while (true) {
+            depth++;
+            if (depth > maxDepth) {  //circuit-breaker: allow only maxDepth nested process instances
+                throw new RuntimeException("To many nested process instances, allowed only up to " + maxDepth + ".");
+            }
             long parentProcessInstanceId = currentInstance.getParentProcessInstanceId();
             if (parentProcessInstanceId > 0) {
                 WorkflowProcessInstance parentProcessInstance = ProcessUtils.getProcessInstance(
@@ -366,6 +371,7 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
                 resolver.setNextFactory(new ProcessVariableResolverFactory(parentProcessInstance));
                 currentInstance = parentProcessInstance;
             } else {
+                //top parent reached
                 break;
             }
         }
@@ -414,16 +420,34 @@ public class LongRunningRestServiceWorkItemHandler extends AbstractLogOrThrowWor
         return httpResponse;
     }
 
-
+    /**
+     * Reeds hostname from the system property or environment variable.
+     * System property overrides the env variable.
+     * Https overrides the http variable.
+     *
+     * @return hostName
+     */
     private String getKieHost() {
-        String host = System.getProperty(Constant.KIE_HOST_SYSTEM_PROPERTY);
+        String host = System.getProperty(Constant.HOSTNAME_HTTPS);
         if (host != null) {
-            host = "http://" + host;
+            host = "https://" + host;
         }
         if (host == null) {
-            host = System.getenv("HOSTNAME_HTTPS"); //TODO configurable
+            host = System.getProperty(Constant.HOSTNAME_HTTP);
+            if (host != null) {
+                host = "http://" + host;
+            }
+        }
+        if (host == null) {
+            host = System.getenv(Constant.HOSTNAME_HTTPS);
             if (host != null) {
                 host = "https://" + host;
+            }
+        }
+        if (host == null) {
+            host = System.getenv(Constant.HOSTNAME_HTTP);
+            if (host != null) {
+                host = "http://" + host;
             }
         }
         return host;
