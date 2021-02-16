@@ -74,7 +74,7 @@ public class WorkItems {
             @PathParam("instanceId") long instanceId,
             Map<String, Object> result)
     {
-        logger.info("Sending {} signal to process id: {}, result: {}.", signalName, instanceId, result);
+        logger.info("Mock server received signal {} and sending it to process id: {}, result: {}.", signalName, instanceId, result);
         RuntimeEngine runtimeEngine = getRuntimeEngine(instanceId);
         KieSession kieSession = runtimeEngine.getKieSession();
         kieSession.signalEvent(signalName, result);

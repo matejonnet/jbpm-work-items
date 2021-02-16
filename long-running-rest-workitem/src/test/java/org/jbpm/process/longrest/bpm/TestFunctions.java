@@ -22,10 +22,10 @@ public class TestFunctions implements java.io.Serializable {
     public String getPreBuildTemplate() {
         String template = "{  "
             + "   'scm': { "
-            + "      'url': @{quote(input.buildConfiguration.scmRepoURL)}, "
-            + "      'revision': @{quote(input.buildConfiguration.scmRevision)} "
+            + "      'url': @{quote(initData.buildConfiguration.scmRepoURL)}, "
+            + "      'revision': @{quote(initData.buildConfiguration.scmRevision)} "
             + "   }, "
-            + "   'syncEnabled': @{quote(input.buildConfiguration.preBuildSyncEnabled)}, "
+            + "   'syncEnabled': @{quote(initData.buildConfiguration.preBuildSyncEnabled)}, "
             + "   'callback': { "
             + "      'url': @{quote(system.callbackUrl)}, "
             + "      'method': @{quote(system.callbackMethod)} ";
@@ -43,7 +43,7 @@ public class TestFunctions implements java.io.Serializable {
 
     public String getBuildTemplate() {
         return ("{  "
-                + "   'buildScript': @{quote(input.buildConfiguration.buildScript)}, "
+                + "   'buildScript': @{quote(initData.buildConfiguration.buildScript)}, "
                 + "   'scm': { "
                 + "      'url': @{quote(preBuildResult.response.scm.url)}, "
                 + "      'revision': @{quote(preBuildResult.response.scm.revision)} "
@@ -57,13 +57,13 @@ public class TestFunctions implements java.io.Serializable {
 
     public String getCompletionTemplate() {
         return ("{ "
-                + "   'buildConfigurationId': @{quote(input.buildConfiguration.id)}, "
+                + "   'buildConfigurationId': @{quote(initData.buildConfiguration.id)}, "
                 + "   'scm': { "
                 + "      'url': @{quote(preBuildResult.?response.?scm.url)}, "
                 + "      'revision': @{quote(preBuildResult.?response.?scm.revision)} "
                 + "   }, "
                 + "   'completionStatus': '@{functions.getCompletionStatus(preBuildResult.?status, ?buildResult.?status)}', "
-                + "   'labels': @{asJson(input.buildConfiguration.labels, true)} "
+                + "   'labels': @{asJson(initData.buildConfiguration.labels, true)} "
                 + "}").replace("'","\"");
     }
 
